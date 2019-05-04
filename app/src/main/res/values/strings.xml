@@ -16,6 +16,17 @@
     <string name="sign">SIGN UP</string>
     <string name="re_enter_password">Confirm Password</string>
     <string name="fullname">Fullname</string>
-    <string name="telephone_number">Telephone Number</string>
+    <string name="telephone_number">Phone Number</string>
     <string name="address">Address</string>
+    <string name="think">What do you think?</string>
+    <string name="no_data">No Data!</string>
+    <string name="username">Username</string>
+    <string name="date_time">Date Time</string>
+    <string name="status">Status</string>
+    <string name="comment">Comment</string>
+    <string name="_0">0</string>
+    <string name="like">Like</string>
+    <string name="share">Share</string>
+    <string name="cancel">Cancel</string>
+    <string name="post">Post</string>
 </resources>

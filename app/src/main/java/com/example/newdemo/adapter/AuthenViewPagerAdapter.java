@@ -1,4 +1,4 @@
-package com.example.newdemo.authen_screen.fragment;
+package com.example.newdemo.adapter;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;

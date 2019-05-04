@@ -2,7 +2,9 @@ package com.example.newdemo.json_models.response;
 
 import com.google.gson.annotations.SerializedName;
 
-public class UserInfor {
+import io.realm.RealmObject;
+
+public class UserInfor extends RealmObject {
     @SerializedName("userId")
     private String userId;
 
@@ -11,6 +13,15 @@ public class UserInfor {
 
     @SerializedName("avatarUrl")
     private String avatar;
+
+    public UserInfor() {
+    }
+
+    public UserInfor(String userId, String fullName, String avatar) {
+        this.userId = userId;
+        this.fullName = fullName;
+        this.avatar = avatar;
+    }
 
     public String getUserId() {
         return userId;
@@ -43,11 +54,5 @@ public class UserInfor {
                 ", fullName='" + fullName + '\'' +
                 ", avatar='" + avatar + '\'' +
                 '}';
-    }
-
-    public UserInfor(String userId, String fullName, String avatar) {
-        this.userId = userId;
-        this.fullName = fullName;
-        this.avatar = avatar;
     }
 }

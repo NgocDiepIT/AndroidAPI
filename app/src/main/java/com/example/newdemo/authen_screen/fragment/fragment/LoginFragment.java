@@ -10,8 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ViewFlipper;
 
 import com.example.newdemo.R;
+import com.example.newdemo.dbcontext.RealmContext;
 import com.example.newdemo.home_screen.HomeActivity;
 import com.example.newdemo.json_models.request.LoginSendForm;
 import com.example.newdemo.json_models.response.UserInfor;
@@ -19,6 +21,8 @@ import com.example.newdemo.network.RetrofitService;
 import com.example.newdemo.network.RetrofitUtils;
 import com.example.newdemo.utils.Utils;
 
+import io.realm.DynamicRealm;
+import io.realm.RealmMigration;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,6 +32,7 @@ public class LoginFragment extends Fragment {
     EditText edtPass;
     Button btnLogin;
     RetrofitService retrofitService;
+    ViewFlipper viewFlipper;
 
     public LoginFragment() {
         // Required empty public constructor
@@ -42,6 +47,7 @@ public class LoginFragment extends Fragment {
         edtName = view.findViewById(R.id.edtName);
         edtPass = view.findViewById(R.id.edtPass);
         btnLogin = view.findViewById(R.id.btnLogin);
+        viewFlipper = view.findViewById(R.id.view_flipper);
 
         retrofitService = RetrofitUtils.getInstance().createService(RetrofitService.class);
 
@@ -64,26 +70,39 @@ public class LoginFragment extends Fragment {
     }
 
     private void login(String username, String password) {
+        viewFlipper.setDisplayedChild(1);
         LoginSendForm sendForm = new LoginSendForm(username, password);
+
         retrofitService.login(sendForm).enqueue(new Callback<UserInfor>() {
             @Override
             public void onResponse(Call<UserInfor> call, Response<UserInfor> response) {
                 UserInfor userInfor = response.body();
+
                 if(response.code()==200 && userInfor != null){
-//                    Log.d("it", "Login successfully!" + userInfor.toString());
-                    Intent intent = new Intent(getActivity(), HomeActivity.class);
-                    startActivity(intent);
+                    Log.d("it23", "Login successfully!" + userInfor.toString());
+                    RealmContext.getInstance().addUser(userInfor);
+
+                    goToHome();
                 } else {
-//                    Log.d("it", "Login code fail!");
+                    Log.d("it23", "Login code fail!");
                     Utils.showToast(getActivity(), "Username or Password is incorrect!");
                 }
+                viewFlipper.setDisplayedChild(0);
             }
 
             @Override
             public void onFailure(Call<UserInfor> call, Throwable t) {
-                Log.d("it", "LOGIN FAIL!");
+                Log.d("it23", "No Internet!");
+                Utils.showToast(getActivity(), "Login fail!");
+                viewFlipper.setDisplayedChild(0);
             }
         });
+    }
+
+    private void goToHome() {
+        Intent intent = new Intent(getActivity(), HomeActivity.class);
+        startActivity(intent);
+        getActivity().finish();
     }
 
 }
